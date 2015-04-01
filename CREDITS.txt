@@ -1,0 +1,59 @@
+DIRECT COLLABORATORS
+
+Varun Ramesh
+Sumbhav Sethia
+Nick Safford
+Justin Adamson
+Darby Vance
+Guy Watson
+
+SOUND EFFECTS
+
+Door - http://www.freesound.org/people/schroedel/sounds/31548/
+Spikes - http://www.freesound.org/people/Motion_S/sounds/178415/
+Splat (from Hel boss) - http://www.freesound.org/people/Slave2theLight/sounds/157113/
+
+Some sound effects generated using bfxr - http://www.bfxr.net/
+
+MUSIC
+
+Public Domain Music From the Open Bundle (http://open.commonly.cc/)
+
+Victory Song - z0MG \/ICT0RY!! ^o^ - Halcyonic Falcon X - Epic Battle Fantasy II
+
+Hel Background Music - A Light in the Darkness of Destruction - Halcyonic Falcon X - Bullet Heaven: Epic Battle Fantasy 3.3
+
+Boss Music - Chaotic Standoff - Stratkat - http://www.newgrounds.com/audio/listen/399801
+
+Defeat Song - Game Over... - Halcyonic Falcon X - Epic Battle Fantasy III
+
+Svart Background Music - Arabesque - brainiac256 - Used under CC-BY 3.0 - http://opengameart.org/content/arabesque
+
+FONTS
+
+Caesar Dressing - Google Fonts - Licensed under the SIL Open Font License 1.1
+
+ART
+
+Whispers of Avalon: Grassland Tileset - By Leonard Pabin - Used under CC-BY 3.0 - http://opengameart.org/content/whispers-of-avalon-grassland-tileset
+
+BrowserQuest Sprites and Tiles - Guillaume Lecollinet - Used under CC-BY 3.0 - http://opengameart.org/content/browserquest-sprites-and-tiles
+
+Universal LPC Sprite Sheet Character Generator - Used under CC-BY-SA 3.0 - http://gaurav.munjal.us/Universal-LPC-Spritesheet-Character-Generator/
+
+Castle Tiles for RPG's - Hyptosis, Zabin, Daniel Cook - Used under CC-BY 3.0 - http://opengameart.org/content/castle-tiles-for-rpgs
+
+Dwarven Cursor - Jinn - Used under GPL 2.0 - http://opengameart.org/content/dwarven-cursor
+
+TEXTURES
+
+Many textures used from http://www.cgtextures.com/
+
+LIBRARIES
+
+Created using the Love2D Engine, licensed under the zlib/libpng license.
+
+middleclass - https://github.com/kikito/middleclass - MIT License
+serpent - https://github.com/pkulchenko/serpent - MIT License
+SLAXML - https://github.com/Phrogz/SLAXML - MIT License
+underscore.lua - https://github.com/mirven/underscore.lua - MIT License
