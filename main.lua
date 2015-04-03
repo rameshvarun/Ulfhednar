@@ -1,5 +1,9 @@
---Middleclass is used for emulating
-require 'libraries/middleclass'
+--Middleclass / Middlestate
+class = require "libraries.middleclass"
+stateful = require "libraries.stateful"
+
+-- HUMP Love utilities
+vector = require "libraries.vector" -- Vector class
 
 --Underscore.lua provides utilities
 _ = require 'libraries/underscore'
