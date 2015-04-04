@@ -44,9 +44,15 @@ def build_windows(use32bit):
 	shutil.move(love_folder, os.path.join(RELEASE_DIR, OUT_DIR))
 	shutil.make_archive(os.path.join(RELEASE_DIR, OUT_DIR), "zip", root_dir=os.path.join(RELEASE_DIR, OUT_DIR))
 
-def make_directory(path):
+def make_directory(path, clear):
+	# Might want to clear directory
+	if clear and os.path.isdir(path):
+		shutil.rmtree(path)
+
+	# Try to create the directory
 	try: os.makedirs(path)
 	except OSError as err:
+		# If directory already exists, continue
 		if err.errno == errno.EEXIST: pass
 		else: raise err
 
@@ -57,9 +63,9 @@ if __name__ == "__main__":
 
 	print "-- Norse Game Release Script --"
 
-	make_directory(RELEASE_DIR)
-	make_directory(TMP_DIR)
-
+	make_directory(RELEASE_DIR, False)
+	make_directory(TMP_DIR, True)
+	
 	build_lovefile()
 
 	if sys.argv[1] == "win32":
