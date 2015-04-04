@@ -1,6 +1,6 @@
 # Norse Game
 
-![](http://i.imgur.com/SbQ6885.gif)
+![](http://i.imgur.com/sEieqOh.gif)
 
 ## Creating a Release
 
