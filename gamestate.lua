@@ -222,7 +222,6 @@ function GameState:update(dt)
 	--Shaking the Camera
 	if self.cameraShakeTime > 0 then
 		self.cameraShakeTime = self.cameraShakeTime - dt
-		
 		cam.x = cam.x + math.random( -self.cameraShakeMag,  self.cameraShakeMag)
 		cam.y = cam.y + math.random( -self.cameraShakeMag,  self.cameraShakeMag)
 	end

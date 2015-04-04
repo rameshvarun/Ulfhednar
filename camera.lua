@@ -33,9 +33,11 @@ function cam:fitPlayers(gameobjects, dt)
 	local alive_count = 0
 
 	for _,gameobject in pairs(gameobjects) do
-		if gameobject.type == "player" and gameobject.hp > 0 then
-			alive_count = alive_count + 1
+		local view = gameobject.type == "player" and gameobject.hp > 0
+		if gameobject.target ~= nil and gameobject.cam_follow ~= false then view = true end
 
+		if view then
+			alive_count = alive_count + 1
 			if gameobject.x < minx or minx == -1 then minx = gameobject.x end
 			if gameobject.x > maxx or maxx == -1 then maxx = gameobject.x end
 			if gameobject.y < miny or miny == -1 then miny = gameobject.y end

@@ -7,9 +7,9 @@ FIREBALL_POWER = 5
 FIREBALL_RELOAD = 1
 FIREBALL_LIFE = 5
 
-
 function Fireball:initialize(side, x, y, angle, game, target)
 	self.target = target
+	self.cam_follow = false
 
 	self.side = side --This tells us if it was a player spawned bullet, or an enemy spawned bullet
 	
@@ -20,11 +20,8 @@ function Fireball:initialize(side, x, y, angle, game, target)
 	self.game = game --Reference back to the game state
 	
 	self.life = 0
-	
 	self.power = FIREBALL_POWER
-	
 	self.rotation = angle
-	
 	
 	self.image = getImage("bullets/fireball/fireball.png")
 	self.offx = self.image:getWidth()/2
@@ -45,8 +42,6 @@ function Fireball:initialize(side, x, y, angle, game, target)
 	self.collheight = self.image:getHeight()*2
 
 	self.rotspeed = 0.5
-	
-	
 end
 
 function Fireball:draw()
@@ -59,9 +54,7 @@ function Fireball:draw()
 	end
 	
 	love.graphics.setColor( 255, 255, 255, 255 )
-	
 	love.graphics.draw(self.image, self.x, self.y, 0, 2, 2, self.offx, self.offy )
-	
 	love.graphics.draw( self.p, 0, 0)
 end
 
