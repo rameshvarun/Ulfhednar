@@ -54,6 +54,8 @@ LIBRARIES
 Created using the Love2D Engine, licensed under the zlib/libpng license.
 
 middleclass - https://github.com/kikito/middleclass - MIT License
+stateful.lua - https://github.com/kikito/stateful.lua - MIT License
 serpent - https://github.com/pkulchenko/serpent - MIT License
 SLAXML - https://github.com/Phrogz/SLAXML - MIT License
 underscore.lua - https://github.com/mirven/underscore.lua - MIT License
+HUMP - http://vrld.github.io/hump/ - MIT License
