@@ -1,18 +1,19 @@
---Middleclass / Middlestate
-class = require "libraries.middleclass"
-stateful = require "libraries.stateful"
+RELEASE = false
 
--- HUMP Love utilities
-vector = require "libraries.vector" -- Vector class
 
---Underscore.lua provides utilities
-_ = require 'libraries/underscore'
+class = require "libraries.middleclass" -- Object oriented programming
+stateful = require "libraries.stateful" -- Stateful objects
+vector = require "libraries.vector" -- Vector utilities
+_ = require 'libraries.underscore' -- Underscore.lua
+lume = require "libraries.lume" -- Game utilities
+
+if not RELEASE then
+	lurker = require "libraries.lurker" -- Live code reload
+end
 
 require 'util'
 require 'collision'
-
 require 'camera'
-
 require 'player'
 
 --Import all menu scripts
@@ -119,6 +120,9 @@ end
 
 
 function love.update(dt)
+	if not RELEASE then
+		lurker.update() -- Live reload system
+	end
 
   --If an error has occurred in the a-star thread, report it
 	if not(astarthread==nil) and astarthread:isRunning() == false then

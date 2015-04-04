@@ -156,11 +156,6 @@ end
 
 --Called whenever a key is released
 function ControlMenu:keyreleased(key, unicode)
-	if key == "return" then
-		currentstate = MapMenu:new(self.players)
-		return
-	end
-
 	if HAS_PLAYER["keyboard"] == nil then
 		local keyplayer = KeyboardPlayer:new()
 		table.insert(self.players, keyplayer)
@@ -171,7 +166,6 @@ end
 
 --When any mouse button has been released
 function ControlMenu:mousepressed(x, y, button)
-
 end
 
 --When any mouse button is released

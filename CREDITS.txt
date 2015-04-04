@@ -59,3 +59,4 @@ serpent - https://github.com/pkulchenko/serpent - MIT License
 SLAXML - https://github.com/Phrogz/SLAXML - MIT License
 underscore.lua - https://github.com/mirven/underscore.lua - MIT License
 HUMP - http://vrld.github.io/hump/ - MIT License
+lurker - https://github.com/rxi/lurker - MIT License
