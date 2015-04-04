@@ -3,9 +3,9 @@ require "map"
 require "trigger"
 require "spawner"
 
-require "rain"
-require "snow"
-require "fog"
+require "effects.rain"
+require "effects.snow"
+require "effects.fog"
 
 --Define class
 GameState = class('GameState')
