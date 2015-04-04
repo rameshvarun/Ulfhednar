@@ -205,7 +205,7 @@ function GameState:update(dt)
 		gameobject:update(dt)
 	end
 	
-	cam:fitPlayers(self.gameobjects)
+	cam:fitPlayers(self.gameobjects, dt)
 	
 	--Update triggers
 	for _, trigger in pairs(self.triggers) do

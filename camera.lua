@@ -24,7 +24,7 @@ function cam:project(mx, my)
 end
 
 --[[ Fits camera to include all players. ]]--
-function cam:fitPlayers(gameobjects)
+function cam:fitPlayers(gameobjects, dt)
 	local minx = -1
 	local maxx = -1
 	local miny = -1
@@ -45,8 +45,10 @@ function cam:fitPlayers(gameobjects)
 
 	if not (minx == -1 or maxx == -1 or miny == -1 or maxy == -1) then
 		--Camera moves to center of all players
-		self.x = (minx + maxx)/2
-		self.y = (miny + maxy)/2
+		local target = vector((minx + maxx)/2, (miny + maxy)/2)
+		local lerpFactor = 3.0
+		self.x = lume.lerp(self.x, target.x, lerpFactor*dt)
+		self.y = lume.lerp(self.y, target.y, lerpFactor*dt)
 		
 		--Calculated zoom factors for both x and y direction
 		local zoomx = ((maxx - minx) + 300)/love.graphics.getWidth()
@@ -62,6 +64,8 @@ function cam:fitPlayers(gameobjects)
 		zoomy = zoomy * self.zoom_factor
 		
 		--Set the camera's zoom to whichever zoom is larger
-		if zoomx > zoomy then self.zoom = zoomx else self.zoom = zoomy end
+		local zoom_target = nil
+		if zoomx > zoomy then zoom_target = zoomx else zoom_target = zoomy end
+		self.zoom = lume.lerp(self.zoom, zoom_target, lerpFactor*dt)
 	end
 end

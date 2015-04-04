@@ -111,13 +111,11 @@ end
 
 function cursorInButton(player, button)
 	local world_x, world_y = cam:project(player.cursor_x, player.cursor_y)
-
 	if world_x > button.x and world_x < button.x + button.width then
 		if world_y > button.y and world_y < button.y + button.height then
 			return true
 		end
 	end
-
 	return false
 end
 
