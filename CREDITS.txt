@@ -45,6 +45,8 @@ Castle Tiles for RPG's - Hyptosis, Zabin, Daniel Cook - Used under CC-BY 3.0 - h
 
 Dwarven Cursor - Jinn - Used under GPL 2.0 - http://opengameart.org/content/dwarven-cursor
 
+Kenney Adventure UI Pack
+
 TEXTURES
 
 Many textures used from http://www.cgtextures.com/

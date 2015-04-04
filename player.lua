@@ -102,6 +102,12 @@ function Player:cursorReleased()
 	return cursor_released
 end
 
+function Player:useColor()
+	local color = PLAYER_COLORS[1]
+	if self.index ~= nil then color = PLAYER_COLORS[self.index] end
+	love.graphics.setColor( color[1] , color[2], color[3], 255 )
+end
+
 function Player:draw()
 
 	if self:isAlive() then
@@ -120,9 +126,7 @@ function Player:draw()
 			love.graphics.rectangle("line", self.x- Player.COLLISION_WIDTH /2, self.y- Player.COLLISION_HEIGHT/2, Player.COLLISION_WIDTH, Player.COLLISION_HEIGHT)
 		end
 		
-		--love.graphics.setColor( 255, 255, 255, 255 )
-		local color = PLAYER_COLORS[self.index]
-		love.graphics.setColor( color[1] , color[2], color[3], 255 )
+		self:useColor()
 		if not (self.image == nil) then
 			if self.hittimer < 0 or math.floor(self.hittimer*6) % 2 == 0 then
 				love.graphics.draw(self.image, self.x, self.y, 0, 2, 2, self.image:getWidth()/2, self.image:getHeight())
@@ -326,31 +330,60 @@ end
 --KeyboardPlayer is a subclass of player
 KeyboardPlayer = class('KeyboardPlayer', Player)
 
-function KeyboardPlayer:initialize(key1, key2)
-	if key1 == nil then key1 = "z" end
-	if key2 == nil then key2 = "x" end
-	
+function KeyboardPlayer:initialize(attack_key, special_key, up_key, left_key, down_key, right_key)
 	Player.initialize(self, "keyboard")
 	
-	self.key1 = key1
-	self.key2 = key2
+	self.attack_key = attack_key
+	self.special_key = special_key
+	self.up_key = up_key
+	self.down_key = down_key
+	self.right_key = right_key
+	self.left_key = left_key
+end
+
+function KeyboardPlayer:toBind()
+	if self.up_key == nil then
+		return "Up Key"
+	elseif self.right_key == nil then
+		return "Right Key"
+	elseif self.down_key == nil then
+		return "Down Key"
+	elseif self.left_key == nil then
+		return "Left Key"
+	elseif self.attack_key == nil then
+		return "Attack Key"
+	elseif self.special_key == nil then
+		return "Special Key"
+	else
+		return nil
+	end
+end
+
+function KeyboardPlayer:bind(key)
+	if self.up_key == nil then
+		self.up_key = key
+	elseif self.right_key == nil then
+		self.right_key = key
+	elseif self.down_key == nil then
+		self.down_key = key
+	elseif self.left_key == nil then
+		self.left_key = key
+	elseif self.attack_key == nil then
+		self.attack_key = key
+	elseif self.special_key == nil then
+		self.special_key = key
+	end
 end
 
 function KeyboardPlayer:movement()
 	local movex = 0
 	local movey = 0
 	
-	if love.keyboard.isDown( "left" ) then
-		movex = -1
-	end
-	if love.keyboard.isDown( "right" ) then
-		movex = 1
-	end
-	if love.keyboard.isDown( "up" ) then
-		movey = -1
-	end
-	if love.keyboard.isDown( "down" ) then
-		movey = 1
+	if self:toBind() == nil then
+		if love.keyboard.isDown(self.left_key) then movex = -1 end
+		if love.keyboard.isDown(self.right_key) then movex = 1 end
+		if love.keyboard.isDown(self.up_key) then movey = -1 end
+		if love.keyboard.isDown(self.down_key) then movey = 1 end
 	end
 	
 	if (not (movex == 0)) and (not (movey == 0)) then
@@ -362,54 +395,74 @@ function KeyboardPlayer:movement()
 end
 
 function KeyboardPlayer:attack()
-	return love.keyboard.isDown( self.key1 )
+	if self:toBind() == nil then
+		return love.keyboard.isDown(self.attack_key)
+	end
+	return false
 end
 
 function KeyboardPlayer:special()
-	return love.keyboard.isDown( self.key2 )
+	if self:toBind() == nil then
+		return love.keyboard.isDown(self.special_key)
+	end
+	return false
 end
 
 --GamepadPlayer is a subclass of player
 GamepadPlayer = class('GamepadPlayer', Player)
 
-function GamepadPlayer:initialize(joystick, button1, button2)
-	if button1 == nil then button1 = 1 end
-	if button2 == nil then button2 = 2 end
-
+function GamepadPlayer:initialize(joystick, attack_button, special_button)
 	Player.initialize(self, "gamepad")
 	
 	self.joystick = joystick
 	
-	self.button1 = button1
-	self.button2 = button2
+	self.attack_button = attack_button
+	self.special_button = special_button
 end
 
+function GamepadPlayer:toBind()
+	if self.attack_button == nil then
+		return "Attack Button"
+	elseif self.special_button == nil then
+		return "Special Button"
+	else
+		return nil
+	end
+end
+
+function GamepadPlayer:bind(button)
+	if self.attack_button == nil then
+		self.attack_button = button
+	elseif self.special_button == nil then
+		self.special_button = button
+	end
+end
 
 function GamepadPlayer:movement()
-	local movex = self.joystick:getAxis( 1 )
-	local movey = self.joystick:getAxis( 2 )
+	local movex = self.joystick:getAxis(1)
+	local movey = self.joystick:getAxis(2)
 	
 	--X Axis Deadzone
-	if math.abs(movex) < 0.2 then
-		movex = 0
-	end
+	if math.abs(movex) < 0.2 then movex = 0 end
 	
 	--Y Axis Deadzone
-	if math.abs(movey) < 0.2 then
-		movey = 0
-	end
+	if math.abs(movey) < 0.2 then movey = 0 end
 	
 	return movex, movey
 end
 
 function GamepadPlayer:attack()
-	--return self.joystick:isDown( self.button1 )
-	return self.joystick:isGamepadDown('a')
+	if self:toBind() == nil then
+		return self.joystick:isDown(self.attack_button)
+	end
+	return false
 end
 
 function GamepadPlayer:special()
-	--return self.joystick:isDown( self.button2 )
-	return self.joystick:isGamepadDown('b')
+	if self:toBind() == nil then
+		return self.joystick:isDown(self.special_button)
+	end
+	return false
 end
 
 --MousePlayer - may not be good enough to actually be used
@@ -417,12 +470,14 @@ MousePlayer = class('MousePlayer', Player)
 
 function MousePlayer:initialize()
 	Player.initialize(self, "mouse")
-	
 	self.down = false
 end
 
+function MousePlayer:toBind()
+	return nil
+end
+
 function MousePlayer:movement()
-	
 	local movex = 0
 	local movey = 0
 	
@@ -439,7 +494,6 @@ function MousePlayer:movement()
 	end
 	
 	self.down = love.mouse.isDown("l")
-	
 	return movex, movey
 end
 

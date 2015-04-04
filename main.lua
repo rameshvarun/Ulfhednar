@@ -87,7 +87,7 @@ function love.load(arg)
 
 	--These two lines are just for testing. Eventually, it should launch menu first, which then redirects to the game state
 	--local players = { KeyboardPlayer:new(), GamepadPlayer(love.joystick.getJoysticks()[1]), GamepadPlayer(love.joystick.getJoysticks()[2])}
-	--local players = { KeyboardPlayer:new() }
+	local players = { KeyboardPlayer:new("z", "x", "up", "left", "down", "right") }
 	--currentstate = GameState:new(players, "hellfloor1.tmx")
 	--currentstate = MapMenu:new(players)
 
@@ -97,7 +97,6 @@ end
 
 --Global logic for switching between background music files
 function setMusic( music_file, music_volume )
-
 	--Default Music volume
 	if music_volume == nil then
 		music_volume = 0.1
@@ -164,10 +163,8 @@ function love.keyreleased(key, unicode)
 
 		if not flags.fullscreen then
 			flags.fullscreen = true
-
 			local modes = love.window.getFullscreenModes( ) --Get all modes
 			table.sort(modes, function(a, b) return a.width*a.height < b.width*b.height end) -- sort from smallest to largest
-
 			love.window.setMode( modes[ #modes ].width, modes[ #modes ].height, flags )
 		else
 			flags.fullscreen = false
