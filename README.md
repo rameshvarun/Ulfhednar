@@ -2,6 +2,9 @@
 
 ![](http://i.imgur.com/sEieqOh.gif)
 
+## Organization
+This project is organized through a [Trello Board](https://trello.com/b/ZeypluNG/norse-game).
+
 ## Creating a Release
 
 ```
