@@ -26,7 +26,18 @@ def build_lovefile():
 	print "-- Created " + LOVE_FILE + " --"
 
 def build_osx():
-	raise NotImplementedError()
+	print "-- Building for OSX 64-bit --"
+	love_zip = os.path.join(TMP_DIR, "love.zip")
+	urllib.urlretrieve(LOVE_OSX, love_zip)
+	with zipfile.ZipFile(love_zip, 'r') as love_zipfile: love_zipfile.extractall(TMP_DIR)
+	os.remove(love_zip)
+
+	app_folder = os.path.join(TMP_DIR, GAME_ID + ".app")
+	os.rename(os.path.join(TMP_DIR, "love.app"), app_folder)
+	shutil.copyfile(LOVE_FILE, os.path.join(app_folder, "Contents", "Resources", GAME_ID + ".love"))
+	shutil.copyfile(os.path.join("platform", "osx", "Info.plist"), os.path.join(app_folder, "Contents", "Info.plist"))
+
+	shutil.make_archive(os.path.join(RELEASE_DIR, GAME_ID + "-osx"), "zip", root_dir=TMP_DIR)
 
 def build_windows(use32bit):
 	print "-- Building for Windows " + ("32" if use32bit else "64") + "-bit --"
@@ -43,6 +54,7 @@ def build_windows(use32bit):
 	OUT_DIR = GAME_ID + "-win32" if use32bit else GAME_ID + "-win64"
 	shutil.move(love_folder, os.path.join(RELEASE_DIR, OUT_DIR))
 	shutil.make_archive(os.path.join(RELEASE_DIR, OUT_DIR), "zip", root_dir=os.path.join(RELEASE_DIR, OUT_DIR))
+	shutil.rmtree(os.path.join(RELEASE_DIR, OUT_DIR))
 
 def make_directory(path, clear):
 	# Might want to clear directory
@@ -76,6 +88,12 @@ if __name__ == "__main__":
 		pass
 	elif sys.argv[1] == "osx":
 		build_osx()
+	elif sys.argv[1] == "all":
+		build_windows(True)
+		build_windows(False)
+		build_osx()
 	else:
 		print "Unkown platform"
 		sys.exit(1)
+
+	shutil.rmtree(TMP_DIR)
