@@ -1,8 +1,3 @@
-require "map"
-
-require "trigger"
-require "spawner"
-
 require "effects.rain"
 require "effects.snow"
 require "effects.fog"

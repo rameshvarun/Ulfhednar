@@ -1,12 +1,5 @@
-local SLAXML = require 'libraries/slaxdom'
-
-local serpent = require("libraries/serpent")
-
 --Directory in which to look for the map file and all of its corresponding files
 MAPS_DIR = "maps/"
-
-require 'layer'
-require 'tileset'
 
 --Define class
 Map = class('Map')
@@ -387,3 +380,5 @@ function Map:draw()
 		end
 	end
 end
+
+return Map

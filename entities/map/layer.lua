@@ -71,8 +71,6 @@ function Layer:draw(debug)
 			love.graphics.draw( self.batches[name] )
 		end
 	end
-
-	
 end
 
 --[[ Uses the tilemap data to populate static bodies in the given physics
@@ -90,3 +88,5 @@ function Layer:populatePhysicsWorld(world)
 		end
 	end
 end
+
+return Layer

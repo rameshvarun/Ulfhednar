@@ -1,11 +1,12 @@
 RELEASE = false
 
-
 class = require "libraries.middleclass" -- Object oriented programming
 stateful = require "libraries.stateful" -- Stateful objects
 vector = require "libraries.vector" -- Vector utilities
 _ = require 'libraries.underscore' -- Underscore.lua
 lume = require "libraries.lume" -- Game utilities
+SLAXML = require "libraries.slaxdom" -- XML Parser
+serpent = require "libraries.serpent" -- Table serialization
 
 if not RELEASE then
 	lurker = require "libraries.lurker" -- Live code reload
@@ -13,17 +14,12 @@ end
 
 require 'util'
 require 'collision'
-require 'camera'
-require 'player'
 
 --Import all menu scripts
 load_scripts("menu")
 print("Loaded all menu scripts")
 
 require 'gamestate'
-
-require 'pickup'
-
 
 --Import all enemy code
 enemytypes = {}
@@ -35,11 +31,12 @@ proptypes = {}
 load_scripts("props", true)
 print("Loaded all prop scripts.")
 
-require "explosion"
-
 --Load in all bullets
 load_scripts("bullets", true)
 print("Loaded all bullet scripts.")
+
+-- Load in all entities
+load_scripts("entities", true)
 
 --Stores whether or not the game has the current focus
 focus = true

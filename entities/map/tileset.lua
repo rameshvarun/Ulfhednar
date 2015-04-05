@@ -39,3 +39,5 @@ function TileSet:initialize(element, map)
 	
 	print("Loaded tileset " .. self.name .. " (" .. self.file .. ") containing " .. self.numtiles .. " tiles")
 end
+
+return TileSet
