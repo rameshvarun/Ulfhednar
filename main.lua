@@ -1,4 +1,4 @@
-RELEASE = true
+RELEASE = false
 
 class = require "libraries.middleclass" -- Object oriented programming
 stateful = require "libraries.stateful" -- Stateful objects
@@ -177,14 +177,14 @@ end
 
 function love.draw()
 	--Render gamestate to the canvas
-	--love.graphics.setShader()
-	--love.graphics.setCanvas(render_canvas)
-	--render_canvas:clear()
+	love.graphics.setShader()
+	love.graphics.setCanvas(render_canvas)
+	render_canvas:clear()
 	currentstate:draw()
 
 	--Render canvas to screen with bloom_shader
-	--love.graphics.setColor( 255, 255, 255, 255 )
-	--love.graphics.setShader(bloom_shader)
+	love.graphics.setColor( 255, 255, 255, 255 )
+	love.graphics.setShader(bloom_shader)
 	love.graphics.setCanvas()
-	--love.graphics.draw(render_canvas, 0, 0)
+	love.graphics.draw(render_canvas, 0, 0)
 end
