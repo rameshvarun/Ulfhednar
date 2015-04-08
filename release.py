@@ -29,7 +29,13 @@ def build_osx():
 	print "-- Building for OSX 64-bit --"
 	love_zip = os.path.join(TMP_DIR, "love.zip")
 	urllib.urlretrieve(LOVE_OSX, love_zip)
-	with zipfile.ZipFile(love_zip, 'r') as love_zipfile: love_zipfile.extractall(TMP_DIR)
+	
+
+	try:
+		subprocess.check_output(['unzip', '-q', love_zip, '-d', TMP_DIR], stderr=subprocess.STDOUT)
+	except subprocess.CalledProcessError as err:
+		print '-- Unzipping failed yo --'
+
 	os.remove(love_zip)
 
 	app_folder = os.path.join(TMP_DIR, GAME_ID + ".app")
