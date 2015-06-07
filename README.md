@@ -1,4 +1,4 @@
-# Norse Game
+# Ulfhednar
 
 ![](http://i.imgur.com/sEieqOh.gif)
 
