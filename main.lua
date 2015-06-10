@@ -52,6 +52,11 @@ function love.load(arg)
 	astarthread = love.thread.newThread('astar.lua')
 	astarthread:start()
 
+	-- Create remote server thread (don't start it though)
+	remoteserver = love.thread.newThread('remoteserver.lua')
+	remoteserver:start()
+	remotechannel = love.thread.getChannel('remotes')
+
 	--Load globally used sound assets
 	explosion1 = love.sound.newSoundData("sound/explosion1.wav")
 	pickup1 = love.sound.newSoundData("sound/pickup1.wav")
@@ -113,14 +118,20 @@ function setMusic( music_file, music_volume )
 	end
 end
 
-
-
+REMOTES = {}
 function love.update(dt)
 	if not RELEASE then
 		lurker.update() -- Live reload system
 	end
 
-  --If an error has occurred in the a-star thread, report it
+	-- Get remote updates from remote channel
+	if remoteserver:isRunning() then
+		while remotechannel:getCount() > 0 do
+			REMOTES = lume.deserialize(remotechannel:pop())
+		end
+	end
+
+  	--If an error has occurred in the a-star thread, report it
 	if not(astarthread==nil) and astarthread:isRunning() == false then
 		print( "Error in A-star Thread!")
 		print( astarthread:getError() )

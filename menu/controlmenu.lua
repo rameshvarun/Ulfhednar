@@ -72,6 +72,15 @@ function ControlMenu:update(dt)
 		end
 	end)
 
+	-- Loop through remotes
+	for id, state in pairs(REMOTES) do
+		if HAS_PLAYER[id] == nil and (state.attack or state.special) then
+			local player = RemotePlayer:new(id)
+			HAS_PLAYER[id] = player
+			table.insert(self.players, player)
+		end
+	end
+
 	--Update player cursors
 	_.each(self.players, function(player)
 		player:updateCursor(dt)
@@ -178,6 +187,7 @@ function ControlMenu:draw()
 		if player.controltype == "keyboard" then control_name = "Keyboard" end
 		if player.controltype == "mouse" then control_name = "Mouse" end
 		if player.controltype == "gamepad" then control_name = player.joystick:getName() end
+		if player.controltype == "remote" then control_name = "Remote Player" end
 
 		love.graphics.setFont(caesardressing20)
 		love.graphics.printf( control_name , card_x + 10, card_y + 180, 210, "center")

@@ -509,3 +509,27 @@ end
 function MousePlayer:special()
 	return love.mouse.isDown("r")
 end
+
+--RemotePlayer - may not be good enough to actually be used
+RemotePlayer = class('RemotePlayer', Player)
+
+function RemotePlayer:initialize(remoteid)
+	Player.initialize(self, "remote")
+	self.remoteid = remoteid
+end
+
+function RemotePlayer:toBind()
+	return nil
+end
+
+function RemotePlayer:movement()
+	return REMOTES[self.remoteid].x, REMOTES[self.remoteid].y
+end
+
+function RemotePlayer:attack()
+	return REMOTES[self.remoteid].attack
+end
+
+function RemotePlayer:special()
+	return REMOTES[self.remoteid].special
+end
