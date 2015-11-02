@@ -1,7 +1,9 @@
 local socket = require("socket")
+local dns = require("dns")
+local serpent = require("libraries.serpent")
 
 -- Service name
-local SERVICE_NAME = "_ulfhednar._udp.local"
+local SERVICE_NAME = "_ulfhednar._udp.local."
 
 -- mDNS constants
 local ipv4Addr = '224.0.0.251'
@@ -16,99 +18,75 @@ assert(udp:setoption('ip-add-membership',
 
 print("Listening for mDNS queries...")
 
-function twoByteInteger(byte1, byte2) return byte1*256 + byte2 end
+function shouldRespond(packet)
 
-function decodePacket(data)
-	-- Helper function: parse DNS name field, supports pointers
-    -- @param data     received datagram
-    -- @param offset    offset within datagram (1-based)
-    -- @return  parsed name
-    -- @return  offset of first byte behind name (1-based)
-    local function parse_name(data, offset)
-        local n,d,l = '', '', data:byte(offset)
-        while (l > 0) do
-            if (l >= 192) then -- pointer
-                local p = (l % 192) * 256 + data:byte(offset + 1)
-                return n..d..parse_name(data, p + 1), offset + 2
-            end
-            n = n..d..data:sub(offset + 1, offset + l)
-            offset = offset + l + 1
-            l = data:byte(offset)
-            d = '.'
-        end
-        return n, offset + 1
-    end
+	if packet.header.qr ~= 0 then return false end
 
-	assert(data:byte(1) == 0)
-	assert(data:byte(2) == 0)
+	-- Multicast DNS messages received with an OPCODE other than zero MUST be silently ignored.
+	if packet.header.opcode ~= 0 then return false end
 
-	local isQuery = data:byte(3) == 0
-	assert(data:byte(4) == 0)
+	-- Multicast DNS messages received with non-zero Response Codes MUST be silently ignored.
+	if packet.header.rcode ~= 0 then return false end
 
-	local qdCount = twoByteInteger(data:byte(5), data:byte(6))
-	local anCount = twoByteInteger(data:byte(7), data:byte(8))
-	local nsCount = twoByteInteger(data:byte(9), data:byte(10))
-	local arCount = twoByteInteger(data:byte(11), data:byte(12))
-	
-	local offset = 13
-
-	local queries = {}
-	for i=1, qdCount do
-		if offset > data:len() then error("Truncated packet.") end
-		local name, offset = parse_name(data, offset)
-		local type = twoByteInteger(data:byte(offset), data:byte(offset + 1))
-		local class = twoByteInteger(data:byte(offset+ 2), data:byte(offset + 3))
-		offset = offset + 4
-
-		table.insert(queries, {
-			name = name,
-			type = type,
-			class = class,
-		})
+	for _,query in ipairs(packet.question) do
+		if query.name == SERVICE_NAME then
+			return true
+		end
 	end
-
-	return {
-		isQuery = isQuery,
-		header = {
-			qdCount = qdCount,
-			anCount = anCount,
-			nsCount = nsCount,
-			arCount = arCount,
-		},
-		queries = queries,
-	}
+	return false
 end
 
-function createReply()
-	local data = "\0\0" -- ID
-	data = data .. "\132\0" --Flags
-	data = data .. "\0\0" -- QDCOUNT
-	data = data .. "\0\0" -- ANCOUNT
-	data = data .. "\0\0" -- NSCOUNT
-	data = data .. "\0\0" -- ARCOUNT
-
-	return data
+function deepcopy(orig)
+    local orig_type = type(orig)
+    local copy
+    if orig_type == 'table' then
+        copy = {}
+        for orig_key, orig_value in next, orig, nil do
+            copy[deepcopy(orig_key)] = deepcopy(orig_value)
+        end
+        setmetatable(copy, deepcopy(getmetatable(orig)))
+    else -- number, string, boolean, etc
+        copy = orig
+    end
+    return copy
 end
 
+local hostname = socket.dns.gethostname()
 while true do
 	local data, sender_ip, sender_port = udp:receivefrom()
-	local status, result = pcall(decodePacket, data)
-	if status then
-		if result.isQuery then
-			local isDiscovery = false
-			for _, query in ipairs(result.queries) do
-				if query.name == SERVICE_NAME then
-					isDiscovery = true
-				end
-			end
+	local packet = dns.parse(data)
+	if packet ~= nil then
+		if shouldRespond(packet) then
+			print("Responding to mDNS query...")
+			print(dns.dump(packet))
 
-			if isDiscovery then
-				print("Sending response.")
-				local data = createReply()
-				udp:sendto(data, sender_ip, sender_port)
-			end
+			print(print(serpent.block(packet)))
+
+			local response = deepcopy(packet)
+			response.header.qr = 1
+			response.header.opcode = 0
+			response.header.aa = 1
+
+			response.answer = {{
+				class = "IN",
+				type = "PTR",
+				name = SERVICE_NAME,
+				ptr = hostname .. '.' .. SERVICE_NAME,
+				ttl = 4500,
+			}, {
+				class = "IN",
+				type = "A",
+				ttl = 4500,
+				a = "128.12.67.89",
+				name = SERVICE_NAME
+			}}
+
+			local out = "\0\0\132\0" .. dns.encode(response, true):sub(5)
+			print(dns.dump(out))
+
+			udp:sendto(out, ipv4Addr, port)
 		end
 	else
-		print("Failed to decode packet: " .. result)
+		print("Failed to parse an mDNS packet...")
 	end
 end
