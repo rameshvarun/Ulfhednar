@@ -2,7 +2,9 @@ RELEASE = false
 
 class = require "libraries.middleclass" -- Object oriented programming
 stateful = require "libraries.stateful" -- Stateful objects
+
 vector = require "libraries.vector" -- Vector utilities
+
 _ = require 'libraries.underscore' -- Underscore.lua
 lume = require "libraries.lume" -- Game utilities
 SLAXML = require "libraries.slaxdom" -- XML Parser
@@ -89,7 +91,7 @@ function love.load(arg)
 
 	--These two lines are just for testing. Eventually, it should launch menu first, which then redirects to the game state
 	--local players = { KeyboardPlayer:new(), GamepadPlayer(love.joystick.getJoysticks()[1]), GamepadPlayer(love.joystick.getJoysticks()[2])}
-	local players = { KeyboardPlayer:new("z", "x", "up", "left", "down", "right") }
+	-- local players = { KeyboardPlayer:new("z", "x", "up", "left", "down", "right") }
 	--currentstate = GameState:new(players, "hellfloor1.tmx")
 	--currentstate = MapMenu:new(players)
 
@@ -188,14 +190,14 @@ end
 
 function love.draw()
 	--Render gamestate to the canvas
-	love.graphics.setShader()
-	love.graphics.setCanvas(render_canvas)
-	render_canvas:clear()
+	--love.graphics.setShader()
+	--love.graphics.setCanvas(render_canvas)
+	--render_canvas:clear()
 	currentstate:draw()
 
 	--Render canvas to screen with bloom_shader
-	love.graphics.setColor( 255, 255, 255, 255 )
-	love.graphics.setShader(bloom_shader)
-	love.graphics.setCanvas()
-	love.graphics.draw(render_canvas, 0, 0)
+	--love.graphics.setColor( 255, 255, 255, 255 )
+	--love.graphics.setShader(bloom_shader)
+	--love.graphics.setCanvas()
+	--love.graphics.draw(render_canvas, 0, 0)
 end

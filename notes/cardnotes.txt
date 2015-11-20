@@ -1,0 +1,8 @@
+# Card Info
+- Player Number
+- Player Color
+- Input Device Name
+- Thumbnail of character
+
+- Bindings
+- Bar of current binding
