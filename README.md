@@ -1,8 +1,6 @@
 # Ulfhednar
 
-[![Join the chat at https://gitter.im/rameshvarun/Ulfhednar](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/rameshvarun/Ulfhednar?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
-
-![](http://i.imgur.com/sEieqOh.gif)
+![](./highlights.gif)
 
 ## Organization
 This project is organized through a [Trello Board](https://trello.com/b/ZeypluNG/norse-game).
