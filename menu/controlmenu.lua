@@ -4,18 +4,18 @@ ControlMenu = class('ControlMenu')
 --Called when the state is first launched
 function ControlMenu:initialize()
 	self.players = {}
-	
+
 	love.graphics.setBackgroundColor( 0 , 0 , 0 )
-	
+
 	HAS_PLAYER = {}
-	
+
 	self.card = getImage("menu/player.png")
 
 	--Ready buttons
 	self.ready_on = getImage("menu/ready_on.png")
 	self.ready_off = getImage("menu/ready_off.png")
 	self.ready_buttons = {}
-	
+
 	cam.y = self.card:getHeight()*0.5
 
 	self.close_button = getImage("menu/buttonroundbrown.png")
@@ -27,34 +27,34 @@ end
 
 --Called every frame for updating AI, etc
 function ControlMenu:update(dt)
-	
+
 	--Camera movement calculation
 	local targetwidth = (#self.players)*self.card:getWidth()*1.1  - self.card:getWidth()*0.1
 	local targetx =  targetwidth*0.5
 	local targetzoomx = ( targetwidth / love.graphics.getWidth() ) * 1.05
 	local targetzoomy = ( self.card:getHeight()*1.5 / love.graphics.getHeight() )
-	
+
 	local targetzoom = targetzoomy
 	if targetzoomx > targetzoomy then
 		targetzoom = targetzoomx
 	end
-	
+
 	if cam.x < targetx then
 		cam.x = cam.x + 400*dt
 	end
-	
+
 	if cam.x > targetx then
 		cam.x = cam.x - 400*dt
 	end
-	
+
 	if #self.players > 0 then
-		if cam.zoom < targetzoom then	
+		if cam.zoom < targetzoom then
 			cam.zoom = cam.zoom + dt
 		else
 			cam.zoom = targetzoom
 		end
 	end
-	
+
 	--Loop through all the joysticks
 	_.each(love.joystick.getJoysticks(), function(joystick)
 		for j=1, joystick:getButtonCount() do
@@ -128,6 +128,8 @@ function cursorInButton(player, button)
 	return false
 end
 
+function ControlMenu:draw()
+end
 
 --Called every frame to draw stuff onto screen
 --[[
@@ -135,11 +137,11 @@ Note: calls that occur between the cam:set() and
 cam::unset() functions draw objects that scroll with the camera
 UI elements and background stuff should obviously not scroll with the camera
 ]]--
-function ControlMenu:draw()
+function ControlMenu:ui()
 	--Draw background elements
-	
+
 	cam:set() --Set camera matrix
-	
+
 	--Draw player cards
 	for i, player in ipairs(self.players) do
 		love.graphics.setColor(255,255,255)
@@ -201,18 +203,18 @@ function ControlMenu:draw()
 			-- TODO: Draw Rebind Button
 		end
 	end
-	
+
 	cam:unset() --Unset camera
-	
+
 	--Draw title
 	love.graphics.setFont(caesardressing40)
-	
+
 	local width = love.graphics.getWidth()/2
 	local x = love.graphics.getWidth()/2 - width/2
 	local y = love.graphics.getHeight()*0.02
 	love.graphics.setColor(0,0,0,255)
 	love.graphics.printf( "Press any key/button to join...", x + 5, y + 5, width, "center")
-	
+
 	love.graphics.setColor(255,255,255,255)
 	love.graphics.printf( "Press any key/button to join...", x, y, width, "center")
 

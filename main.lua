@@ -190,7 +190,7 @@ function love.draw()
 	--Render gamestate to the canvas
 	love.graphics.setShader()
 	love.graphics.setCanvas(render_canvas)
-	render_canvas:clear()
+	love.graphics.clear()
 	currentstate:draw()
 
 	--Render canvas to screen with bloom_shader
@@ -198,4 +198,11 @@ function love.draw()
 	love.graphics.setShader(bloom_shader)
 	love.graphics.setCanvas()
 	love.graphics.draw(render_canvas, 0, 0)
+
+	--Draw game UI
+	love.graphics.setShader()
+	love.graphics.setCanvas()
+	if currentstate.ui ~= nil then
+		currentstate:ui()
+	end
 end

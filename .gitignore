@@ -3,3 +3,5 @@
 *.blend2
 *.xcf
 release
+.DS_Store
+love.app/
